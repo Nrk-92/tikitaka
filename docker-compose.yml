@@ -1,0 +1,25 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-ecommerce
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secure_password
+      MYSQL_DATABASE: TikiTaka
+      MYSQL_USER: Josep
+      MYSQL_PASSWORD: 12345
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  app:
+    build: .
+    ports:     
+      - 3000:3000
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app/backend
+volumes:
+  mysql_data:
